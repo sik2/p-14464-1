@@ -75,12 +75,17 @@ public class App {
         int id = Integer.parseInt(cmdBits[1]);
 
         // 삭제?id=1 인경우 id 가 1 wiseSaying 객체를 찾아서 삭제한다.
-        delete(id);
+        WiseSaying wiseSaying = delete(id);
+
+        if (wiseSaying == null) {
+            System.out.println("%d번 명언은 존재하지 않습니다.".formatted(id));
+            return;
+        }
 
         System.out.println("%d번 명언이 삭제되었습니다.".formatted(id));
     }
 
-    void delete(int id) {
+    WiseSaying delete(int id) {
         WiseSaying wiseSaying = null;
         for (int i = 0; i < wiseSayings.size(); i++) {
             if (wiseSayings.get(i).getId() == id) {
@@ -89,5 +94,7 @@ public class App {
         }
 
         wiseSayings.remove(wiseSaying);
+
+        return wiseSaying;
     }
 }
