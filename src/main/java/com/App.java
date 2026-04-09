@@ -39,13 +39,16 @@ public class App {
         System.out.print("작가 : ");
         String author = scanner.nextLine().trim();
 
-        int id = ++lastId;
+        WiseSaying wiseSaying = write(content, author);
 
-        WiseSaying wiseSaying = new WiseSaying(id, content, author);
+        System.out.println("%d번 명언이 등록되었습니다.".formatted(wiseSaying.getId()));
+    }
 
+    WiseSaying write (String content, String author) {
+        WiseSaying wiseSaying = new WiseSaying(++lastId, content, author);
         wiseSayings.add(wiseSaying);
 
-        System.out.println("%d번 명언이 등록되었습니다.".formatted(id));
+        return wiseSaying;
     }
 
     void actionList() {
@@ -72,7 +75,12 @@ public class App {
         int id = Integer.parseInt(cmdBits[1]);
 
         // 삭제?id=1 인경우 id 가 1 wiseSaying 객체를 찾아서 삭제한다.
+        delete(id);
 
+        System.out.println("%d번 명언이 삭제되었습니다.".formatted(id));
+    }
+
+    void delete(int id) {
         WiseSaying wiseSaying = null;
         for (int i = 0; i < wiseSayings.size(); i++) {
             if (wiseSayings.get(i).getId() == id) {
@@ -81,9 +89,5 @@ public class App {
         }
 
         wiseSayings.remove(wiseSaying);
-//        wiseSayings.removeIf(ws -> ws.getId() == id);
-
-        System.out.println("%d번 명언이 삭제되었습니다.".formatted(id));
     }
-
 }
