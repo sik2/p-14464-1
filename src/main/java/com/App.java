@@ -109,18 +109,7 @@ public class App {
 
         int id = Integer.parseInt(cmdBits[1]);
 
-        modify(id);
-
-        System.out.println("%d번 명언이 수정되었습니다.".formatted(id));
-    }
-
-    void modify(int id) {
-        WiseSaying wiseSaying = null;
-        for (int i = 0; i < wiseSayings.size(); i++) {
-            if (wiseSayings.get(i).getId() == id) {
-                wiseSaying = wiseSayings.get(i);
-            }
-        }
+        WiseSaying wiseSaying = findById(id);
 
         if (wiseSaying == null) {
             System.out.println("%d번 명언은 존재하지 않습니다.".formatted(id));
@@ -130,11 +119,29 @@ public class App {
         System.out.println("명언(기존) : %s".formatted(wiseSaying.getContent()));
         System.out.print("명언 : ");
         String content = scanner.nextLine().trim();
-        wiseSaying.setContent(content);
 
         System.out.println("작가(기존) : %s".formatted(wiseSaying.getAuthor()));
         System.out.print("작가 : ");
         String author = scanner.nextLine().trim();
+
+        modify(wiseSaying, content, author);
+
+        System.out.println("%d번 명언이 수정되었습니다.".formatted(id));
+    }
+
+    void modify(WiseSaying wiseSaying, String content, String author) {
+        wiseSaying.setContent(content);
         wiseSaying.setAuthor(author);
+    }
+
+    WiseSaying findById(int id) {
+        WiseSaying wiseSaying = null;
+        for (int i = 0; i < wiseSayings.size(); i++) {
+            if (wiseSayings.get(i).getId() == id) {
+                wiseSaying = wiseSayings.get(i);
+            }
+        }
+
+        return wiseSaying;
     }
 }
