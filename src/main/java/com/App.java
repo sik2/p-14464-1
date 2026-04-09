@@ -23,6 +23,9 @@ public class App {
                 actionWrite();
             } else if (cmd.equals("목록")) {
                 actionList();
+            } else if (cmd.startsWith("삭제")) {
+                actionDelete(cmd);
+
             }
         }
 
@@ -57,4 +60,30 @@ public class App {
             System.out.println("%d / %s / %s".formatted(wiseSaying.getId(), wiseSaying.getAuthor(), wiseSaying.getContent()));
         }
     }
+
+    void actionDelete(String cmd) {
+        String[] cmdBits = cmd.split("=");
+
+        if (cmdBits.length < 2 || cmdBits[1].isEmpty()) {
+            System.out.println("id 확인해주세요.");
+            return;
+        }
+
+        int id = Integer.parseInt(cmdBits[1]);
+
+        // 삭제?id=1 인경우 id 가 1 wiseSaying 객체를 찾아서 삭제한다.
+
+        WiseSaying wiseSaying = null;
+        for (int i = 0; i < wiseSayings.size(); i++) {
+            if (wiseSayings.get(i).getId() == id) {
+                wiseSaying = wiseSayings.get(i);
+            }
+        }
+
+        wiseSayings.remove(wiseSaying);
+//        wiseSayings.removeIf(ws -> ws.getId() == id);
+
+        System.out.println("%d번 명언이 삭제되었습니다.".formatted(id));
+    }
+
 }
