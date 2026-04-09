@@ -1,5 +1,7 @@
 package com;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -8,6 +10,8 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         int lastId = 0;
+        List<WiseSaying> wiseSayings = new ArrayList<>();
+
         while (true) {
             System.out.print("명령) ");
             String cmd = scanner.nextLine().trim();
@@ -22,9 +26,29 @@ public class Main {
                 System.out.print("작가 : ");
                 String wiseSayingAuthor = scanner.nextLine().trim();
 
-                int num = ++lastId;
-//                System.out.printf("%d번 명언이 등록되었습니다. \n", num);
-                System.out.println("%d번 명언이 등록되었습니다.".formatted(num));
+                int id = ++lastId;
+
+                WiseSaying wiseSaying = new WiseSaying();
+
+                wiseSaying.id = id;
+                wiseSaying.content = wiseSayingContent;
+                wiseSaying.author = wiseSayingAuthor;
+
+                wiseSayings.add(wiseSaying);
+
+                System.out.println("%d번 명언이 등록되었습니다.".formatted(id));
+            } else if (cmd.equals("목록")) {
+                System.out.println("번호 / 작가 / 명언");
+                System.out.println("----------------------");
+
+
+                for (int i = wiseSayings.size() - 1; i >= 0; i++) {
+                    WiseSaying wiseSaying = wiseSayings.get(i);
+                    if (wiseSaying == null) {
+                        continue;
+                    }
+                    System.out.println("%d / %s / %s".formatted(wiseSaying.id, wiseSaying.author, wiseSaying.content));
+                }
             }
         }
 
