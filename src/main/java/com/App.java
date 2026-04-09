@@ -25,7 +25,8 @@ public class App {
                 actionList();
             } else if (cmd.startsWith("삭제")) {
                 actionDelete(cmd);
-
+            } else if (cmd.startsWith("수정")) {
+                actionModify(cmd);
             }
         }
 
@@ -96,5 +97,44 @@ public class App {
         wiseSayings.remove(wiseSaying);
 
         return wiseSaying;
+    }
+
+    void actionModify(String cmd) {
+        String[] cmdBits = cmd.split("=");
+
+        if (cmdBits.length < 2 || cmdBits[1].isEmpty()) {
+            System.out.println("id 확인해주세요.");
+            return;
+        }
+
+        int id = Integer.parseInt(cmdBits[1]);
+
+        modify(id);
+
+        System.out.println("%d번 명언이 수정되었습니다.".formatted(id));
+    }
+
+    void modify(int id) {
+        WiseSaying wiseSaying = null;
+        for (int i = 0; i < wiseSayings.size(); i++) {
+            if (wiseSayings.get(i).getId() == id) {
+                wiseSaying = wiseSayings.get(i);
+            }
+        }
+
+        if (wiseSaying == null) {
+            System.out.println("%d번 명언은 존재하지 않습니다.".formatted(id));
+            return;
+        }
+
+        System.out.println("명언(기존) : %s".formatted(wiseSaying.getContent()));
+        System.out.print("명언 : ");
+        String content = scanner.nextLine().trim();
+        wiseSaying.setContent(content);
+
+        System.out.println("작가(기존) : %s".formatted(wiseSaying.getAuthor()));
+        System.out.print("작가 : ");
+        String author = scanner.nextLine().trim();
+        wiseSaying.setAuthor(author);
     }
 }
