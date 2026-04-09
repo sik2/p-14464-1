@@ -66,16 +66,8 @@ public class App {
     }
 
     void actionDelete(String cmd) {
-        String[] cmdBits = cmd.split("=");
+        int id = cmdSplitId(cmd);
 
-        if (cmdBits.length < 2 || cmdBits[1].isEmpty()) {
-            System.out.println("id 확인해주세요.");
-            return;
-        }
-
-        int id = Integer.parseInt(cmdBits[1]);
-
-        // 삭제?id=1 인경우 id 가 1 wiseSaying 객체를 찾아서 삭제한다.
         WiseSaying wiseSaying = findById(id);
 
         if (wiseSaying == null) {
@@ -93,15 +85,7 @@ public class App {
     }
 
     void actionModify(String cmd) {
-        String[] cmdBits = cmd.split("=");
-
-        if (cmdBits.length < 2 || cmdBits[1].isEmpty()) {
-            System.out.println("id 확인해주세요.");
-            return;
-        }
-
-        int id = Integer.parseInt(cmdBits[1]);
-
+        int id = cmdSplitId(cmd);
         WiseSaying wiseSaying = findById(id);
 
         if (wiseSaying == null) {
@@ -136,5 +120,16 @@ public class App {
         }
 
         return wiseSaying;
+    }
+
+    int cmdSplitId(String cmd) {
+        String[] cmdBits = cmd.split("=");
+
+        if (cmdBits.length < 2 || cmdBits[1].isEmpty()) {
+            System.out.println("id 확인해주세요.");
+            return -1;
+        }
+
+        return Integer.parseInt(cmdBits[1]);
     }
 }
