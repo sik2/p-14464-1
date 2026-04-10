@@ -1,33 +1,39 @@
 package com;
 
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Rq {
-    private String actionName;
-    private Map<String, String> paramsMap;
+    private final String actionName;
+    private final Map<String, String> paramsMap;
 
-    Rq(String cmd) {
-        paramsMap = new HashMap<>();
+    public Rq(String cmd) {
 
         String[] cmdBits = cmd.split("\\?");
         actionName = cmdBits[0];
 
         String queryString = cmdBits.length > 1 ? cmdBits[1].trim() : "";
 
-        String[] queryStringStringBits = queryString.split("&");
+//        String[] queryStringStringBits = queryString.split("&");
+//
+//        for (String queryParam : queryStringStringBits) {
+//            String[] queryParamBits = queryParam.split("=");
+//            String key = queryParamBits[0].trim();
+//            String value = queryParamBits.length > 1 ?  queryParamBits[1].trim() : "";
+//
+//            if (value.isEmpty()) {
+//                continue;
+//            }
 
-        for (String queryParam : queryStringStringBits) {
-            String[] queryParamBits = queryParam.split("=");
-            String key = queryParamBits[0].trim();
-            String value = queryParamBits.length > 1 ?  queryParamBits[1].trim() : "";
+        paramsMap = Arrays.stream(queryString.split("&"))
+                .map(p -> p.split("=", 2))
+                .filter(bits -> bits.length > 0 && !bits[0].trim().isEmpty() && !bits[1].trim().isEmpty())
+                .collect(Collectors.toMap(
+                        bits -> bits[0].trim(),
+                        bits -> bits[1].trim()
+                ));
 
-            if (value.isEmpty()) {
-                continue;
-            }
-
-            paramsMap.put(key, value);
-        }
 
     }
 
@@ -36,11 +42,7 @@ public class Rq {
     }
 
     public String getParam(String paramName, String defaultValue) {
-        if (paramsMap.containsKey(paramName)) {
-            return paramsMap.get(paramName);
-        } else {
-            return defaultValue;
-        }
+        return paramsMap.getOrDefault(paramName, defaultValue);
     }
 
     public int getParamAsInt(String paramName, int defaultValue) {
