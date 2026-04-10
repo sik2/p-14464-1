@@ -3,7 +3,6 @@ package com;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.stream.IntStream;
 
 public class App {
     Scanner scanner = new Scanner(System.in);
@@ -17,23 +16,35 @@ public class App {
             System.out.print("명령) ");
             String cmd = scanner.nextLine().trim();
 
-            if (cmd.equals("종료")) {
-                break;
-            } else if (cmd.equals("등록")) {
-                actionWrite();
-            } else if (cmd.equals("목록")) {
-                actionList();
-            } else if (cmd.startsWith("삭제")) {
-                actionDelete(cmd);
-            } else if (cmd.startsWith("수정")) {
-                actionModify(cmd);
+            Rq rq = new Rq(cmd);
+
+            switch (rq.getActionName()) {
+                case "종료":
+                    System.out.println("프로그램을 종료합니다.");
+                    return;
+                case "등록":
+                    actionWrite();
+                    break;
+                case "목록":
+                    actionList();
+                    break;
+                case "삭제":
+                    actionDelete(rq);
+                    break;
+                case "수정":
+                    actionModify(rq);
+                    break;
             }
         }
-        scanner.close();
     }
 
-    void actionModify(String cmd) {
-        int id = splitCmd(cmd);
+    void actionModify(Rq rq) {
+        int id = rq.getParamAsInt("id", -1);
+
+        if (id == -1) {
+            System.out.println("숫자를 입력해주세요.");
+            return;
+        }
 
         WiseSaying wiseSaying = findById(id);
 
@@ -54,8 +65,13 @@ public class App {
         System.out.println("%d번 명언이 수정되었습니다.".formatted(id));
     }
 
-    void actionDelete(String cmd) {
-        int id = splitCmd(cmd);
+    void actionDelete(Rq rq) {
+        int id = rq.getParamAsInt("id", -1);
+
+        if (id == -1) {
+            System.out.println("숫자를 입력해주세요.");
+            return;
+        }
 
         WiseSaying wiseSaying = findById(id);
 
@@ -87,23 +103,6 @@ public class App {
             WiseSaying wiseSaying = wiseSayings.get(i);
             System.out.println("%d / %s / %s".formatted(wiseSaying.getId(), wiseSaying.getAuthor(), wiseSaying.getContent()));
         }
-
-
-        System.out.println("번호 / 작가 / 명언");
-        System.out.println("----------------------");
-        IntStream.range(0, wiseSayings.size())
-                .map(i -> wiseSayings.size() - 1 - i)
-                .mapToObj(wiseSayings::get)
-                .forEach(
-                        wiseSaying ->  System.out.println("%d / %s / %s".formatted(wiseSaying.getId(), wiseSaying.getAuthor(), wiseSaying.getContent()))
-                );
-//
-//        System.out.println("번호 / 작가 / 명언");
-//        System.out.println("----------------------");
-//        wiseSayings.reversed()
-//                .stream()
-//                .map(wiseSaying -> "%d / %s / %s".formatted(wiseSaying.getId(), wiseSaying.getAuthor(), wiseSaying.getContent()))
-//                .forEach(System.out::println);
     }
 
 
@@ -114,22 +113,8 @@ public class App {
 
     void delete(WiseSaying wiseSaying) {
         wiseSayings.remove(wiseSaying);
-
-//        wiseSayings.removeIf(ws -> ws.getId() == id);
     }
 
-
-    int splitCmd(String cmd) {
-        String[] cmdBits = cmd.split("=");
-        return Integer.parseInt(cmdBits[1]);
-
-//        return Arrays.stream(cmd.split("="))
-//                .skip(1)
-//                .findFirst()
-//                .filter(s -> !s.isEmpty())
-//                .map(Integer::parseInt)
-//                .orElse(-1);
-    }
 
     WiseSaying findById(int id) {
         WiseSaying wiseSaying = null;
@@ -140,10 +125,5 @@ public class App {
             }
         }
         return wiseSaying;
-
-//        return wiseSayings.stream()
-//                .filter(ws -> ws.getId() == id)
-//                .findFirst()
-//                .orElse(null);
     }
 }
