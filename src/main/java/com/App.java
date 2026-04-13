@@ -3,20 +3,16 @@ package com;
 import com.domain.system.SystemController;
 import com.domain.wiseSaying.WiseSayingController;
 
-import java.util.Scanner;
-
 public class App {
-    private final Scanner scanner = new Scanner(System.in);
-
     void run () {
-        SystemController systemController = new SystemController();
-        WiseSayingController wiseSayingController = new WiseSayingController(scanner);
+        SystemController systemController = AppContext.systemController;
+        WiseSayingController wiseSayingController = AppContext.wiseSayingController;
 
         System.out.println("== 명언 앱 ==");
 
         while (true) {
             System.out.print("명령) ");
-            String cmd = scanner.nextLine().trim();
+            String cmd = AppContext.scanner.nextLine().trim();
 
             Rq rq = new Rq(cmd);
 

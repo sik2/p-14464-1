@@ -1,18 +1,14 @@
 package com.domain.wiseSaying;
 
+import com.AppContext;
 import com.Rq;
 
 import java.util.List;
 import java.util.Scanner;
 
 public class WiseSayingController {
-    private final Scanner scanner;
-    private final WiseSayingService wiseSayingService;
-
-    public WiseSayingController(Scanner scanner) {
-        this.scanner = scanner;
-        this.wiseSayingService = new WiseSayingService();
-    }
+    private final Scanner scanner = AppContext.scanner;
+    private final WiseSayingService wiseSayingService = AppContext.wiseSayingService;
 
     public void actionModify(Rq rq) {
         int id = rq.getParamAsInt("id", -1);
