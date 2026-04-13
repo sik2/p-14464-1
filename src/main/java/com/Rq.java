@@ -10,21 +10,10 @@ public class Rq {
 
     public Rq(String cmd) {
 
-        String[] cmdBits = cmd.split("\\?");
+        String[] cmdBits = cmd.split("\\?", 2);
         actionName = cmdBits[0];
 
-        String queryString = cmdBits.length > 1 ? cmdBits[1].trim() : "";
-
-//        String[] queryStringStringBits = queryString.split("&");
-//
-//        for (String queryParam : queryStringStringBits) {
-//            String[] queryParamBits = queryParam.split("=");
-//            String key = queryParamBits[0].trim();
-//            String value = queryParamBits.length > 1 ?  queryParamBits[1].trim() : "";
-//
-//            if (value.isEmpty()) {
-//                continue;
-//            }
+        String queryString = cmdBits.length == 2 ? cmdBits[1].trim() : "";
 
         paramsMap = Arrays.stream(queryString.split("&"))
                 .map(p -> p.split("=", 2))
