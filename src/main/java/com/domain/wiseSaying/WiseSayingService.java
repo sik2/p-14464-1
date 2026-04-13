@@ -10,7 +10,9 @@ public class WiseSayingService {
     }
 
     public WiseSaying write(String content, String author) {
-        return wiseSayingRepository.write(content, author);
+        WiseSaying wiseSaying = new WiseSaying(content, author);
+
+        return wiseSayingRepository.save(wiseSaying);
     }
 
     public List<WiseSaying> getWiseSayings() {
@@ -22,7 +24,9 @@ public class WiseSayingService {
     }
 
     public void modify(WiseSaying wiseSaying, String content, String author) {
-        wiseSayingRepository.modify(wiseSaying, content, author);
+        wiseSaying.setContent(content);
+        wiseSaying.setAuthor(author);
+        wiseSayingRepository.save(wiseSaying);
     }
 
     public void delete(WiseSaying wiseSaying) {

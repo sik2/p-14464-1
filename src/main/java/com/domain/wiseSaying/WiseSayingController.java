@@ -78,7 +78,14 @@ public class WiseSayingController {
         System.out.println("----------------------");
         for (int i = wiseSayings.size() - 1; i >= 0; i--) {
             WiseSaying wiseSaying = wiseSayings.get(i);
-            System.out.println("%d / %s / %s / %s / %s".formatted(wiseSaying.getId(), wiseSaying.getAuthor(), wiseSaying.getContent(), wiseSaying.getCreatedDate(), wiseSaying.getModifiedDate()));
+            System.out.println("%d / %s / %s / %s / %s".formatted(
+                            wiseSaying.getId(),
+                            wiseSaying.getAuthor(),
+                            wiseSaying.getContent(),
+                            wiseSaying.getCreatedDate(),
+                            wiseSaying.getModifiedDate()
+                    )
+            );
         }
     }
 }

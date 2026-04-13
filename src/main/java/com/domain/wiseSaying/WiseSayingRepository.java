@@ -8,13 +8,6 @@ public class WiseSayingRepository {
     private final List<WiseSaying> wiseSayings = new ArrayList<>();
     private int lastId = 0;
 
-    public WiseSaying write(String content, String author) {
-        WiseSaying wiseSaying = new WiseSaying(++lastId, content, author);
-        wiseSayings.add(wiseSaying);
-
-        return wiseSaying;
-    }
-
     public List<WiseSaying> getWiseSayings() {
         return wiseSayings;
     }
@@ -30,10 +23,16 @@ public class WiseSayingRepository {
         return wiseSaying;
     }
 
-    void modify(WiseSaying wiseSaying, String content, String author) {
-        wiseSaying.setContent(content);
-        wiseSaying.setAuthor(author);
-        wiseSaying.setModifiedDate(LocalDateTime.now());
+
+    public WiseSaying save(WiseSaying wiseSaying) {
+        if (wiseSaying.isNew()) {
+            wiseSaying.setId(++lastId);
+            wiseSayings.add(wiseSaying);
+        } else {
+            wiseSaying.setModifiedDate(LocalDateTime.now());
+        }
+
+        return wiseSaying;
     }
 
     void delete(WiseSaying wiseSaying) {
